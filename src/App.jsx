@@ -18,38 +18,50 @@ import ClientRegistration from "./pages/Clientregisteration";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import WebsiteGuard from "./pages/WebsiteGuard";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import AdminLayout from "./pages/admin/AdminLayout";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminUsers from "./pages/admin/AdminUsers";
+import { AuthProvider } from "./auth/AuthContext";
+import { ProtectedRoute } from "./auth/ProtectedRoute";
+
 const App = () => {
   return (
-    <Router>
-      {/* Add ScrollToTop here */}
-      <WebsiteGuard></WebsiteGuard>
-      <ScrollToTop />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/PricingGuide" element={<PricingGuide />}></Route>
-        <Route path="/about" element={<About />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
-        <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
-        <Route
-          path="/BookingCalculator"
-          element={<BookingCalculator />}
-        ></Route>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />}></Route>
-        <Route
-          path="/cleanerapplication"
-          element={<CleanerApplication />}
-        ></Route>
-        <Route
-          path="/ClientRegistration"
-          element={<ClientRegistration />}
-        ></Route>
-        {/* Add your other routes here */}
-      </Routes>
-      <ChatBox></ChatBox>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <WebsiteGuard />
+        <ScrollToTop />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/PricingGuide" element={<PricingGuide />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
+          <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
+          <Route path="/BookingCalculator" element={<BookingCalculator />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/cleanerapplication" element={<CleanerApplication />} />
+          <Route path="/ClientRegistration" element={<ClientRegistration />} />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute adminOnly>
+                <AdminLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<AdminDashboard />} />
+            <Route path="users" element={<AdminUsers />} />
+          </Route>
+        </Routes>
+        <ChatBox />
+      </Router>
+    </AuthProvider>
   );
 };
 

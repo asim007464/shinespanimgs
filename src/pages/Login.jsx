@@ -1,30 +1,32 @@
 import React, { useState } from "react";
-import { Eye, EyeOff, User, Sparkles, Shield, ArrowLeft } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Eye, EyeOff, ArrowLeft } from "lucide-react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { supabase } from "../lib/supabase";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
-  const demoCredentials = [
-    {
-      role: "Client",
-      email: "abc@gmail.com",
-      pass: "client123",
-      icon: <User size={18} />,
-    },
-    {
-      role: "Cleaner",
-      email: "abc@gmail.com",
-      pass: "cleaner123",
-      icon: <Sparkles size={18} />,
-    },
-    {
-      role: "Admin",
-      email: "abc@gmail.com",
-      pass: "admin123",
-      icon: <Shield size={18} />,
-    },
-  ];
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+      navigate(from, { replace: true });
+    } catch (err) {
+      setError(err.message || "Login failed");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     // Changed min-h-screen to h-screen and added overflow-hidden to lock the page height
@@ -83,7 +85,12 @@ const Login = () => {
             </h1>
           </div>
 
-          <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+          <form className="space-y-5" onSubmit={handleSubmit}>
+            {error && (
+              <div className="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+                {error}
+              </div>
+            )}
             <div>
               <label className="block text-sm font-medium text-slate-700">
                 Email
@@ -91,6 +98,9 @@ const Login = () => {
               <input
                 type="email"
                 placeholder="name@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
                 className="mt-1.5 w-full rounded-lg border border-slate-300 px-4 py-2.5 outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10"
               />
             </div>
@@ -100,17 +110,20 @@ const Login = () => {
                 <label className="block text-sm font-medium text-slate-700">
                   Password
                 </label>
-                <a
-                  href="#"
+                <Link
+                  to="/forgot-password"
                   className="text-sm font-medium text-blue-600 hover:underline"
                 >
                   Forgot password?
-                </a>
+                </Link>
               </div>
               <div className="relative mt-1.5">
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
                   className="w-full rounded-lg border border-slate-300 px-4 py-2.5 pr-12 outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10"
                 />
                 <button
@@ -123,8 +136,12 @@ const Login = () => {
               </div>
             </div>
 
-            <button className="w-full rounded-lg bg-blue-600 py-3 font-semibold text-white shadow-lg shadow-blue-500/20 transition-all hover:bg-blue-700 active:scale-[0.98]">
-              Sign In
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full rounded-lg bg-blue-600 py-3 font-semibold text-white shadow-lg shadow-blue-500/20 transition-all hover:bg-blue-700 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
+            >
+              {loading ? "Signing in..." : "Sign In"}
             </button>
           </form>
 

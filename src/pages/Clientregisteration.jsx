@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Mail, Lock, MapPin, ArrowLeft, Phone, User } from "lucide-react";
-import { Link } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { supabase } from "../lib/supabase";
 
 const ClientRegistration = () => {
-  // Ensure page starts at top
+  const navigate = useNavigate();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -22,10 +23,50 @@ const ClientRegistration = () => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Client Registered:", formData);
-    alert("Account created successfully!");
+    setError("");
+    setLoading(true);
+    try {
+      const { data, error: signUpError } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+        options: {
+          data: {
+            first_name: formData.firstName,
+            last_name: formData.lastName,
+            phone: formData.phone,
+            postcode: formData.postcode,
+            city: formData.city,
+            role: "client",
+          },
+        },
+      });
+      if (signUpError) throw signUpError;
+      try {
+        await supabase.from("profiles").upsert({
+          id: data.user.id,
+          email: formData.email,
+          first_name: formData.firstName,
+          last_name: formData.lastName,
+          phone: formData.phone,
+          postcode: formData.postcode,
+          city: formData.city,
+          role: "client",
+        });
+      } catch {
+        // Profile may be created by trigger; ignore upsert errors
+      }
+      alert("Account created successfully! Check your email to confirm.");
+      navigate("/login");
+    } catch (err) {
+      setError(err.message || "Registration failed");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -79,6 +120,11 @@ const ClientRegistration = () => {
           </div>
 
           <form className="space-y-5" onSubmit={handleSubmit}>
+            {error && (
+              <div className="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+                {error}
+              </div>
+            )}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Input
                 label="First Name *"
@@ -141,9 +187,10 @@ const ClientRegistration = () => {
 
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-3 font-semibold rounded-sm shadow-lg shadow-blue-500/20 transition-all hover:bg-blue-700 active:scale-[0.98]"
+              disabled={loading}
+              className="w-full bg-blue-600 text-white py-3 font-semibold rounded-sm shadow-lg shadow-blue-500/20 transition-all hover:bg-blue-700 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
             >
-              Create Account
+              {loading ? "Creating..." : "Create Account"}
             </button>
           </form>
 
