@@ -1,10 +1,19 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Mail, CheckCircle } from "lucide-react";
 import { supabase } from "../lib/supabase";
+import { useAuth } from "../auth/AuthContext";
 
 const ForgotPassword = () => {
+  const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth();
   const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    if (!authLoading && user) {
+      navigate("/", { replace: true });
+    }
+  }, [user, authLoading, navigate]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [sent, setSent] = useState(false);
@@ -28,6 +37,14 @@ const ForgotPassword = () => {
       setLoading(false);
     }
   };
+
+  if (authLoading || user) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center bg-white">
+        {authLoading && <div className="animate-spin rounded-full h-10 w-10 border-4 border-blue-500 border-t-transparent" />}
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-screen w-full bg-white font-sans text-slate-900 overflow-hidden">

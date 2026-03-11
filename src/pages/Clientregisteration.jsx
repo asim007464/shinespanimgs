@@ -2,12 +2,21 @@ import React, { useState, useEffect } from "react";
 import { ArrowLeft } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabase";
+import { useAuth } from "../auth/AuthContext";
 
 const ClientRegistration = () => {
   const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    if (!authLoading && user) {
+      navigate("/", { replace: true });
+    }
+  }, [user, authLoading, navigate]);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -68,6 +77,14 @@ const ClientRegistration = () => {
       setLoading(false);
     }
   };
+
+  if (authLoading || user) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center bg-white">
+        {authLoading && <div className="animate-spin rounded-full h-10 w-10 border-4 border-blue-500 border-t-transparent" />}
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-screen w-full bg-white font-sans text-slate-900 overflow-hidden">

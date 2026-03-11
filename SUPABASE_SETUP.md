@@ -23,6 +23,8 @@ In your Supabase project, go to **SQL Editor** and run in order:
 2. `supabase/migrations/002_admin_email_policy.sql`
 3. `supabase/migrations/003_admin_users_rpc.sql`
 4. `supabase/migrations/004_super_admin_and_make_admin.sql`
+5. `supabase/migrations/006_fix_admin_see_all_users.sql` (if admins can't see other admins)
+6. `supabase/migrations/007_bookings_cleaner_apps_locations.sql`
 
 This creates:
 - `profiles` table for user metadata (name, phone, role)

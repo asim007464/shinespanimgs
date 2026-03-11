@@ -23,12 +23,17 @@ import ResetPassword from "./pages/ResetPassword";
 import AdminLayout from "./pages/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminUsers from "./pages/admin/AdminUsers";
+import AdminCleanerApplications from "./pages/admin/AdminCleanerApplications";
+import AdminBookings from "./pages/admin/AdminBookings";
+import AdminLocations from "./pages/admin/AdminLocations";
 import { AuthProvider } from "./auth/AuthContext";
 import { ProtectedRoute } from "./auth/ProtectedRoute";
+import { LocationsProvider } from "./context/LocationsContext";
 
 const App = () => {
   return (
     <AuthProvider>
+      <LocationsProvider>
       <Router>
         <WebsiteGuard />
         <ScrollToTop />
@@ -57,10 +62,14 @@ const App = () => {
           >
             <Route index element={<AdminDashboard />} />
             <Route path="users" element={<AdminUsers />} />
+            <Route path="cleaner-applications" element={<AdminCleanerApplications />} />
+            <Route path="bookings" element={<AdminBookings />} />
+            <Route path="locations" element={<AdminLocations />} />
           </Route>
         </Routes>
         <ChatBox />
       </Router>
+      </LocationsProvider>
     </AuthProvider>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { supabase } from "../lib/supabase";
 import {
   User,
   Phone,
@@ -174,6 +175,52 @@ const CleanerApplication = () => {
       ...prev,
       eligibility: { ...prev.eligibility, [field]: !prev.eligibility[field] },
     }));
+  };
+
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+
+  const handleSubmitApplication = async () => {
+    const { firstName, middleName, surname, gender, mobile, email, postcode, experienceLevel, experienceTypes, eligibility } = formData;
+    if (!firstName?.trim() || !surname?.trim() || !mobile?.trim() || !email?.trim() || !postcode?.trim()) {
+      setSubmitError("Please fill in all required fields (First name, Surname, Mobile, Email, Postcode).");
+      return;
+    }
+    if (!experienceLevel) {
+      setSubmitError("Please select your experience level.");
+      return;
+    }
+    if (!experienceTypes?.length) {
+      setSubmitError("Please select at least one cleaning type.");
+      return;
+    }
+    if (!eligibility.rightToWork || !eligibility.bankAccount || !eligibility.selfEmployed || !eligibility.noCriminalRecord) {
+      setSubmitError("Please confirm all eligibility requirements.");
+      return;
+    }
+    setSubmitError("");
+    setSubmitting(true);
+    try {
+      const { error } = await supabase.from("cleaner_applications").insert({
+        first_name: firstName.trim(),
+        middle_name: middleName?.trim() || null,
+        surname: surname.trim(),
+        gender: gender || null,
+        mobile: mobile.trim(),
+        email: email.trim(),
+        postcode: postcode.trim(),
+        experience_level: experienceLevel,
+        experience_types: experienceTypes,
+        availability: formData.availability,
+        eligibility,
+      });
+      if (error) throw error;
+      nextStep();
+    } catch (err) {
+      setSubmitError(err.message || "Failed to submit application.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -481,6 +528,11 @@ const CleanerApplication = () => {
                   <h2 className="text-2xl font-black text-slate-900">
                     Eligibility
                   </h2>
+                  {submitError && (
+                    <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm">
+                      {submitError}
+                    </div>
+                  )}
                   <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200">
                     <label className="text-sm font-bold text-slate-700 block mb-2">
                       Please confirm the following:
@@ -550,10 +602,11 @@ const CleanerApplication = () => {
                       </button>
                     )}
                     <button
-                      onClick={nextStep}
-                      className="flex-[2] py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-200 transition-all active:scale-[0.98]"
+                      onClick={step === 4 ? handleSubmitApplication : nextStep}
+                      disabled={step === 4 && submitting}
+                      className="flex-[2] py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-200 transition-all active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
                     >
-                      {step === 4 ? "Submit Application" : "Next Step"}
+                      {step === 4 ? (submitting ? "Submitting..." : "Submit Application") : "Next Step"}
                     </button>
                   </div>
                 </div>

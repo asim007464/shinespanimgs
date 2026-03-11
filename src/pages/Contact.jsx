@@ -1,9 +1,15 @@
 import React from "react";
 import FAQ from "../components/Contactcomponents/FAQ";
 import Navbar from "../components/Homecomponents/Navbar";
-
 import Footer from "../components/Homecomponents/Footer";
+import { useLocations } from "../context/LocationsContext";
+
 const Contact = () => {
+  const { locations } = useLocations();
+  const serviceAreaText = locations.length > 0
+    ? locations.map((l) => `${l.city} (${l.postcode})`).join(", ")
+    : "All across London";
+
   const topCards = [
     {
       title: "Phone",
@@ -48,7 +54,7 @@ const Contact = () => {
     },
     {
       title: "Service Area",
-      value: "All across london",
+      value: serviceAreaText,
       icon: (
         <svg
           className="w-6 h-6"

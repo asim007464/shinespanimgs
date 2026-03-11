@@ -1,6 +1,12 @@
 import React from "react";
+import { useLocations } from "../../context/LocationsContext";
 
 const FAQ = () => {
+  const { locations } = useLocations();
+  const areasText = locations.length > 0
+    ? locations.map((l) => `${l.city} (${l.postcode})`).join(", ")
+    : "London and surrounding areas";
+
   const faqs = [
     {
       question: "How do I get a quote?",
@@ -14,8 +20,7 @@ const FAQ = () => {
     },
     {
       question: "What areas do you serve?",
-      answer:
-        "We serve London (without within 50 miles). Contact us to confirm service availability in your location.",
+      answer: `We serve ${areasText}. Contact us to confirm service availability in your location.`,
     },
     {
       question: "Do I need to be home?",

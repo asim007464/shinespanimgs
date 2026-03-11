@@ -5,10 +5,18 @@ import CTA from "../components/Homecomponents/CTA";
 import Navbar from "../components/Homecomponents/Navbar";
 import Footer from "../components/Homecomponents/Footer";
 import { Link } from "react-router-dom";
-import { MapPin, Search, CheckCircle2 } from "lucide-react"; // Added icons
+import { MapPin, Search, CheckCircle2, XCircle } from "lucide-react";
+import { useLocations } from "../context/LocationsContext";
 
 const Home = () => {
   const [postcode, setPostcode] = useState("");
+  const [checked, setChecked] = useState(null);
+  const { locations, checkPostcodeInArea } = useLocations();
+
+  const handleCheck = () => {
+    if (!postcode?.trim()) return;
+    setChecked(checkPostcodeInArea(postcode));
+  };
 
   return (
     <div>
@@ -72,14 +80,28 @@ const Home = () => {
                     type="text"
                     placeholder="e.g. SW1A 1AA"
                     value={postcode}
-                    onChange={(e) => setPostcode(e.target.value)}
+                    onChange={(e) => { setPostcode(e.target.value); setChecked(null); }}
+                    onKeyDown={(e) => e.key === "Enter" && handleCheck()}
                     className="w-full p-4 border border-gray-400 rounded-sm outline-none focus:border-[#448cff] transition-all font-bold text-slate-700 uppercase"
                   />
                 </div>
-                <button className="bg-[#448cff] hover:bg-blue-700 text-white px-10 py-4 rounded-sm font-black uppercase text-xs tracking-widest transition-all shadow-lg shadow-blue-100 flex items-center justify-center gap-2 active:scale-95">
+                <button
+                  onClick={handleCheck}
+                  className="bg-[#448cff] hover:bg-blue-700 text-white px-10 py-4 rounded-sm font-black uppercase text-xs tracking-widest transition-all shadow-lg shadow-blue-100 flex items-center justify-center gap-2 active:scale-95"
+                >
                   <Search size={16} /> Check
                 </button>
               </div>
+              {checked === true && (
+                <div className="mt-6 p-4 rounded-xl bg-green-50 border border-green-200 flex items-center justify-center gap-2 text-green-700 font-semibold">
+                  <CheckCircle2 size={20} /> Yes! We serve your area.
+                </div>
+              )}
+              {checked === false && (
+                <div className="mt-6 p-4 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center gap-2 text-amber-700 font-semibold">
+                  <XCircle size={20} /> We haven&apos;t started in your area yet. <Link to="/contact" className="underline">Contact us</Link> to request service.
+                </div>
+              )}
             </div>
           </div>
         </section>

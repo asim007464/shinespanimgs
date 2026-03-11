@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react"; // 1. Added useEffect here
+import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
+import { supabase } from "../lib/supabase";
 import "react-datepicker/dist/react-datepicker.css";
 
 import {
@@ -38,6 +39,9 @@ const Register = () => {
     .toISOString()
     .split("T")[0];
 
+  const [formError, setFormError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
   // --- Centralized Form State ---
   const [formData, setFormData] = useState({
     postcode: "",
@@ -46,21 +50,21 @@ const Register = () => {
     bedrooms: 1,
     bathrooms: 1,
     extras: [],
-    duration: null, // Changed from 4
-    products: "", // Changed from "I will provide"
-    frequency: "", // Changed from "Weekly"
-    email: "abc@gmail.com",
+    duration: null,
+    products: "",
+    frequency: "",
+    email: "",
     details: "",
     arrivalTime: "09:00",
     accessMethod: "Spare keys",
     firstCleanDate: null,
-    firstName: "asim",
-    surname: "asdf",
-    phone: "030195207928",
-    addressLine1: "asdfadsf",
-    addressLine2: "asdfadsf",
-    city: "adsffsa",
-    addressPostcode: "SW1A 0AA",
+    firstName: "",
+    surname: "",
+    phone: "",
+    addressLine1: "",
+    addressLine2: "",
+    city: "",
+    addressPostcode: "",
     cardNumber: "",
     expiry: "",
     cvc: "",
@@ -70,8 +74,62 @@ const Register = () => {
     setFormData((prev) => ({ ...prev, ...fields }));
   };
 
-  const nextStep = () => setStep((prev) => Math.min(prev + 1, 4));
+  const nextStep = () => {
+    setFormError("");
+    setStep((prev) => Math.min(prev + 1, 4));
+  };
   const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
+
+  const handleComplete = async () => {
+    const { postcode, serviceType, firstName, surname, phone, email, addressLine1, city, addressPostcode } = formData;
+    if (!postcode?.trim()) {
+      setFormError("Please enter your postcode.");
+      return;
+    }
+    if (!serviceType?.length) {
+      setFormError("Please select at least one service type.");
+      return;
+    }
+    if (!firstName?.trim() || !surname?.trim() || !phone?.trim() || !email?.trim()) {
+      setFormError("Please fill in all required address fields.");
+      return;
+    }
+    setFormError("");
+    setSubmitting(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      const { error } = await supabase.from("bookings").insert({
+        user_id: user?.id || null,
+        postcode: postcode.trim(),
+        service_types: formData.serviceType,
+        property_type: formData.propertyType || null,
+        bedrooms: formData.bedrooms,
+        bathrooms: formData.bathrooms,
+        extras: formData.extras,
+        duration_hours: formData.duration,
+        products: formData.products || null,
+        frequency: formData.frequency || null,
+        first_clean_date: formData.firstCleanDate ? formData.firstCleanDate.toISOString().split("T")[0] : null,
+        arrival_time: formData.arrivalTime,
+        access_method: formData.accessMethod,
+        first_name: firstName.trim(),
+        surname: surname.trim(),
+        phone: phone.trim(),
+        email: email.trim(),
+        address_line1: addressLine1?.trim() || null,
+        address_line2: formData.addressLine2?.trim() || null,
+        city: city?.trim() || null,
+        address_postcode: addressPostcode?.trim() || null,
+      });
+      if (error) throw error;
+      alert("Booking request submitted successfully! We'll contact you shortly.");
+      window.location.reload();
+    } catch (err) {
+      setFormError(err.message || "Failed to submit booking.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white font-sans text-slate-800">
@@ -513,6 +571,11 @@ const Register = () => {
             {/* STEP 4: PAYMENT */}
             {step === 4 && (
               <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
+                {formError && (
+                  <div className="p-4 border border-red-200 rounded-xl bg-red-50 text-red-700 text-sm">
+                    {formError}
+                  </div>
+                )}
                 <div className="p-4 bg-blue-50 border border-blue-100 rounded-xl flex items-start space-x-3 text-sm text-blue-700">
                   <Info size={20} className="shrink-0 mt-0.5" />
                   <p>
@@ -661,10 +724,11 @@ const Register = () => {
                   </button>
                 )}
                 <button
-                  onClick={nextStep}
-                  className="flex-[2] bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-xl font-bold transition-all shadow-lg shadow-blue-100"
+                  onClick={step === 4 ? handleComplete : nextStep}
+                  disabled={step === 4 && submitting}
+                  className="flex-[2] bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-xl font-bold transition-all shadow-lg shadow-blue-100 disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                  {step === 4 ? "Complete" : "Continue"}
+                  {step === 4 ? (submitting ? "Submitting..." : "Complete") : "Continue"}
                 </button>
               </div>
               <button
