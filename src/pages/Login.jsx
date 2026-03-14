@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Eye, EyeOff, ArrowLeft } from "lucide-react";
+import { images } from "../lib/images";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 import { useAuth } from "../auth/AuthContext";
@@ -55,7 +56,7 @@ const Login = () => {
         <div
           className="absolute inset-0 h-full w-full bg-cover bg-right bg-no-repeat"
           style={{
-            backgroundImage: "url('./image.png')",
+            backgroundImage: `url('${images.authBackground}')`,
             filter: "brightness(0.5)",
           }}
         />
@@ -65,7 +66,7 @@ const Login = () => {
 
         {/* Logo */}
         <div className="absolute left-10 top-10 flex items-center space-x-2 text-white">
-          <img src="./websitelogo.png" className="w-[100px]" alt="Logo" />
+          <img src={images.logo} className="w-[100px]" alt="Logo" />
         </div>
 
         {/* Testimonial & Footer */}

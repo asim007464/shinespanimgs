@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../auth/AuthContext";
+import { images } from "../../lib/images";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,7 +25,7 @@ const Navbar = () => {
             <NavLink to="/" className="block">
               <img
                 className="h-12 sm:h-14 lg:h-16 w-auto max-w-[140px] sm:max-w-none object-contain"
-                src="./websitelogo.png"
+                src={images.logo}
                 alt="Shine & Span"
               />
             </NavLink>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { ShieldCheck, RotateCcw, Lock, Check } from "lucide-react";
+import { ShieldCheck, RotateCcw, Check } from "lucide-react";
+import { images as guardImages } from "../lib/images";
 
 const WebsiteGuard = ({ children }) => {
   const [isVerified, setIsVerified] = useState(false);
@@ -7,28 +8,12 @@ const WebsiteGuard = ({ children }) => {
   const [error, setError] = useState(false);
   const [target, setTarget] = useState({ name: "Vacuum Cleaner", id: 1 });
 
-  // Cleaning related images
+  // Cleaning related images - eye-catching, professional
   const images = [
-    {
-      id: 1,
-      name: "Vacuum Cleaner",
-      url: "https://images.unsplash.com/photo-1558317374-067fb5f30001?w=400&q=80",
-    },
-    {
-      id: 2,
-      name: "Cleaning Spray",
-      url: "https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2xlYW5pbmclMjBzcHJheXxlbnwwfHwwfHx8MA%3D%3D",
-    },
-    {
-      id: 3,
-      name: "Broom",
-      url: "https://plus.unsplash.com/premium_photo-1664443944967-75316b3d2987?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YnJvb218ZW58MHx8MHx8fDA%3D",
-    },
-    {
-      id: 4,
-      name: "Bucket & Mop",
-      url: "https://plus.unsplash.com/premium_photo-1677529007590-0c51011f3650?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8QnVja2V0JTIwJTI2JTIwTW9wfGVufDB8fDB8fHww",
-    },
+    { id: 1, name: "Vacuum Cleaner", url: guardImages.guard.vacuum },
+    { id: 2, name: "Cleaning Spray", url: guardImages.guard.spray },
+    { id: 3, name: "Broom", url: guardImages.guard.broom },
+    { id: 4, name: "Bucket & Mop", url: guardImages.guard.mop },
   ];
 
   useEffect(() => {

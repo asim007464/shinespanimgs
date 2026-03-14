@@ -1,5 +1,6 @@
 import React from "react";
 import CTA from "../components/Homecomponents/CTA";
+import { images } from "../lib/images";
 import ValuesSection from "../components/Aboutcomponents/ValueSection";
 import TeamSection from "../components/Aboutcomponents/TeamSection";
 import Navbar from "../components/Homecomponents/Navbar";
@@ -63,16 +64,10 @@ const About = () => {
               <div className="lg:w-1/2 relative">
                 <div className="relative rounded-3xl overflow-hidden shadow-2xl">
                   <img
-                    src="./aboutheader.jpg"
-                    alt="Professional Cleaning"
+                    src={images.aboutHeader}
+                    alt="100% Satisfaction Guaranteed - Professional cleaning"
                     className="w-full h-[500px] object-cover"
                   />
-                  {/* Decorative Accent */}
-                  <div className="absolute bottom-0 right-0 bg-[#5898ffb9] p-8 rounded-tl-3xl hidden md:block">
-                    <p className="text-white font-bold text-xl text-center leading-tight">
-                      100% Satisfaction <br /> Guaranteed
-                    </p>
-                  </div>
                 </div>
               </div>
             </div>

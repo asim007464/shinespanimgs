@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ArrowLeft } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { images } from "../lib/images";
 import { supabase } from "../lib/supabase";
 import { useAuth } from "../auth/AuthContext";
 
@@ -93,14 +94,14 @@ const ClientRegistration = () => {
         <div
           className="absolute inset-0 h-full w-full bg-cover bg-right bg-no-repeat"
           style={{
-            backgroundImage: "url('./image.png')",
+            backgroundImage: `url('${images.authBackground}')`,
             filter: "brightness(0.5)",
           }}
         />
         <div className="absolute inset-0 bg-black/20" />
 
         <div className="absolute left-10 top-10 flex items-center space-x-2 text-white">
-          <img src="./websitelogo.png" className="w-[100px]" alt="Logo" />
+          <img src={images.logo} className="w-[100px]" alt="Logo" />
         </div>
 
         <div className="absolute bottom-10 left-10 right-10">

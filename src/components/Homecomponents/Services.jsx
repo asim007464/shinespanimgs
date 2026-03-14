@@ -1,21 +1,23 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { images } from "../../lib/images";
+
 const Services = () => {
   const serviceList = [
     {
       title: "General House Cleaning",
       desc: "Regular cleaning service for busy homeowners looking for a consistently spotless environment.",
-      image: "/general.png",
+      image: images.services.general,
     },
     {
       title: "Deep Cleaning",
       desc: "Intensive cleaning for hard-to-reach areas, perfect for seasonal refreshes or move-in/out.",
-      image: "/Servicesimgs/deepcleaning.webp",
+      image: images.services.deepCleaning,
     },
     {
       title: "Carpet Cleaning",
       desc: "Professional steam cleaning for carpets and rugs using eco-friendly, deep-stain removal tech.",
-      image: "/Servicesimgs/Carpetcleaning.jpg",
+      image: images.services.carpet,
     },
   ];
 

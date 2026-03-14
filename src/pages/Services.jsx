@@ -1,5 +1,6 @@
 import React from "react";
 import Inclusions from "../components/Servicescomponents/Inclusions";
+import { images } from "../lib/images";
 import BookCTA from "../components/Servicescomponents/BookCTA";
 import Navbar from "../components/Homecomponents/Navbar";
 import { Link } from "react-router-dom";
@@ -15,7 +16,7 @@ const Services = () => {
         "Ongoing upkeep",
         "Flexible scheduling",
       ],
-      image: "./general.png",
+      image: images.services.general,
       icon: (
         <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
       ),
@@ -29,7 +30,7 @@ const Services = () => {
         "Cabinet interiors",
         "Professional equipment",
       ],
-      image: "./Servicesimgs/deepcleaning.webp",
+      image: images.services.deepCleaning,
       icon: (
         <path d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-7.714 2.143L11 21l-2.286-6.857L1 12l7.714-2.143L11 3z" />
       ),
@@ -43,7 +44,7 @@ const Services = () => {
         "Allergen elimination",
         "Quick drying",
       ],
-      image: "./Servicesimgs/Carpetcleaning.jpg",
+      image: images.services.carpet,
       icon: (
         <path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
       ),
@@ -57,7 +58,7 @@ const Services = () => {
         "Moss and algae removal",
         "Eco-friendly process",
       ],
-      image: "./Servicesimgs/pressurewashing.jpg",
+      image: images.services.pressureWashing,
       icon: (
         <path d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4a2 2 0 012-2m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
       ),
@@ -71,7 +72,7 @@ const Services = () => {
         "Damage prevention",
         "Professional service",
       ],
-      image: "./Servicesimgs/guttercleaning.webp",
+      image: images.services.gutter,
       icon: <path d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />,
     },
     {
@@ -83,7 +84,7 @@ const Services = () => {
         "Grease removal",
         "Food-safe cleaning",
       ],
-      image: "./Servicesimgs/ovenfridgecleaning.webp",
+      image: images.services.ovenFridge,
       icon: (
         <path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
       ),
@@ -97,7 +98,7 @@ const Services = () => {
         "Flexible scheduling",
         "Professional standards",
       ],
-      image: "./Servicesimgs/officecleaning.webp",
+      image: images.services.office,
       icon: (
         <path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
       ),
@@ -111,7 +112,7 @@ const Services = () => {
         "Agency-approved",
         "Move-out ready",
       ],
-      image: "./Servicesimgs/tenancycleaning.webp",
+      image: images.services.tenancy,
       icon: <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />,
     },
     {
@@ -123,7 +124,7 @@ const Services = () => {
         "Quick turnaround",
         "Superhost support",
       ],
-      image: "./Servicesimgs/airbnbcleaning.webp",
+      image: images.services.airbnb,
       icon: (
         <path d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
       ),
