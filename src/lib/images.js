@@ -33,7 +33,7 @@ export const images = {
   guard: {
     vacuum: "/security/photo-1558317374-067fb5f30001.jfif",
     spray: "/security/photo-1628177142898-93e36e4e3a50.avif",
-    broom: "/security/premium_photo-1677529007590-0c51011f3650.avif",
-    mop: "/security/premium_photo-1664443944967-75316b3d2987.avif",
+    broom: "/security/premium_photo-1664443944967-75316b3d2987.avif",
+    mop: "/security/premium_photo-1677529007590-0c51011f3650.avif",
   },
 };

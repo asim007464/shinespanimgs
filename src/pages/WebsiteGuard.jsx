@@ -8,7 +8,7 @@ const WebsiteGuard = ({ children }) => {
   const [error, setError] = useState(false);
   const [target, setTarget] = useState({ name: "Vacuum Cleaner", id: 1 });
 
-  // Cleaning related images - eye-catching, professional
+  // Cleaning related images - Broom bottom-left, Bucket & Mop bottom-right
   const images = [
     { id: 1, name: "Vacuum Cleaner", url: guardImages.guard.vacuum },
     { id: 2, name: "Cleaning Spray", url: guardImages.guard.spray },
