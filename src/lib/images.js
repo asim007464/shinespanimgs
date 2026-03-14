@@ -29,11 +29,11 @@ export const images = {
     airbnb: `${UNSPLASH_BASE}/photo-1522708323590-d24dbb6b0267?${IMG_OPTS}`,
   },
 
-  // WebsiteGuard - cleaning tools (local images)
+  // WebsiteGuard - cleaning tools (vacuum, spray, broom, mop)
   guard: {
-    vacuum: "/Servicesimgs/guard-vacuum.jpg",
-    spray: "/Servicesimgs/guard-spray.jpg",
-    broom: "/Servicesimgs/guard-broom.jpg",
-    mop: "/Servicesimgs/guard-mop.jpg",
+    vacuum: `${UNSPLASH_BASE}/photo-1558317374-067fb5f30001?w=400&q=80`,
+    spray: `${UNSPLASH_BASE}/photo-1628177142898-93e36e4e3a50?w=400&q=80`,
+    broom: `${UNSPLASH_BASE}/photo-1589939705384-5185137a7f0f?w=400&q=80`,
+    mop: `${UNSPLASH_BASE}/photo-1563453392212-326f5e854473?w=400&q=80`,
   },
 };
